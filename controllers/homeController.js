@@ -5,13 +5,15 @@ const leerUrls = async (req, res) => {
     console.log(req.user);
     try {
 
-        const producto = await productos.find().lean()
+        const producto = await productos.find({user: req.user.id}).lean()
         const urls = await Url.find().lean()
         res.render('home', { urls: urls, productos: producto })
 
     } catch (error) {
-        console.log(error);
-        res.send('fallo algo...')        
+        // console.log(error);
+        // res.send('fallo algo...')   
+        req.flash('mensajes', [{ msg: error.message }])
+        return res.redirect('/')     
     }    
 }
 
@@ -22,9 +24,9 @@ const agregarUrl = async (req, res) => {
         const url = new Url({origin: origin})
         await url.save()
         res.redirect('/')
-    } catch (e) {
-        console.log(e);
-        res.send('error algo fallo')
+    } catch (error) {
+        req.flash('mensajes', [{ msg: error.message }])
+        return res.redirect('/')
     }
 }
 
@@ -36,8 +38,8 @@ const eliminarUrl = async( req, res) => {
         res.redirect('/')
 
     } catch (error) {
-        console.log(error);
-        res.send('error algo fallo')
+        req.flash('mensajes', [{ msg: error.message }])
+        return res.redirect('/')
     }
 }
 
@@ -48,8 +50,8 @@ const editarUrlForm = async(req, res) => {
         const url = await Url.findById(id).lean()
         res.render('home', {url})
     } catch (error) {
-        console.log(error);
-        res.send('error algo fallo')
+        req.flash('mensajes', [{ msg: error.message }])
+        return res.redirect('/')
 }}
 
 const editarUrl = async(req, res) => {
@@ -59,8 +61,8 @@ const editarUrl = async(req, res) => {
         await Url.findByIdAndUpdate(id, {origin: origin})     
         res.redirect('/')  
     } catch (error) {
-        console.log(error);
-        res.send('error algo fallo')
+        req.flash('mensajes', [{ msg: error.message }])
+        return res.redirect('/')
 }}
 
 const redireccionamiento = async (req, res) => {
@@ -70,12 +72,10 @@ const redireccionamiento = async (req, res) => {
         const urlDB = await Url.findOne({shortURL: shortURL})
         res.redirect(urlDB.origin)
     } catch (error) {
-        
+        req.flash('mensajes', [{ msg: error.message }])
+        return res.redirect('/')
     }
 }
-
-
-
 
 module.exports = {
     leerUrls,
