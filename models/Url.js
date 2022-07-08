@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const uuid = require('uuid');
+const { v4: uuidv4 } = require("uuid");
 const {Schema} = mongoose
 
 const urlSchema = new Schema({
@@ -12,8 +12,11 @@ const urlSchema = new Schema({
         type: String,
         unique: true,
         required: true,
-        default: uuid.v1().slice(0,8) 
-    }
+        default: uuidv4().slice(0,8) 
+    },
+    user:{
+       type: Schema.Types.ObjectId 
+    },
 })
 const Url = mongoose.model('Url', urlSchema)
 module.exports = Url

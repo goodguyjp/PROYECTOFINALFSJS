@@ -1,11 +1,15 @@
 const User = require("../models/User");
 const {validationResult} = require('express-validator')
-const uuid = require('uuid');
+const { v4: uuidv4 } = require("uuid");
 
 const registerForm = (req, res) => {
-    res.render('register', {mensajes : req.flash('mensajes') })    
+    res.render('register')    
 }
 
+const loginForm = (req, res) => {
+    res.render('login')
+}
+// HU 1, Yo como visitante quiero registrarme en el sitio y ser un usuario registrado
 const registerUser = async(req, res) => {
     const errors = validationResult(req)
     if(!errors.isEmpty()){
@@ -19,7 +23,7 @@ const registerUser = async(req, res) => {
         let user = await User.findOne({email: email})
         if(user) throw new Error('ya existe el usuario')
         
-        user = new User({ userName, email, password, tokenConfirm: uuid.v1()})
+        user = new User({ userName, email, password, tokenConfirm: uuidv4()})
         await user.save()        
        
         // enviar correo electronico con la confirmacion de la cuenta
@@ -57,10 +61,6 @@ const confirmarCuenta = async (req, res) => {
         return res.redirect('/auth/login')
         // res.json({ error: error.message })
     }
-}
-
-const loginForm = (req, res) => {
-    res.render('login', {mensajes : req.flash('mensajes') })
 }
 
 const loginUser = async (req, res) => {

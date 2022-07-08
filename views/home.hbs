@@ -1,4 +1,4 @@
-<h1>Agregue sus URL</h1>
+<h1 align="center">Haz tu Pedido aqui !</h1>
 
 {{> Form}}
 
@@ -7,3 +7,10 @@
    {{> Card item=this}}
 
 {{/each}}
+
+{{#each productos }}
+
+   {{> CardProducto productos=this}}
+
+{{/each}}
+

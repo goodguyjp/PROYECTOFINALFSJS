@@ -1,11 +1,13 @@
 const Url = require('../models/Url')
+const productos = require('../models/productos')
 
 const leerUrls = async (req, res) => {
     console.log(req.user);
     try {
 
+        const producto = await productos.find().lean()
         const urls = await Url.find().lean()
-        res.render('home', { urls: urls })
+        res.render('home', { urls: urls, productos: producto })
 
     } catch (error) {
         console.log(error);
@@ -72,11 +74,14 @@ const redireccionamiento = async (req, res) => {
     }
 }
 
+
+
+
 module.exports = {
     leerUrls,
     agregarUrl,
     eliminarUrl,
     editarUrlForm,
     editarUrl,
-    redireccionamiento    
+    redireccionamiento,   
 }
