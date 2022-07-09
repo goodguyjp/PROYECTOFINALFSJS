@@ -1,6 +1,11 @@
 console.log('Hola esto es frontend');
 const jquery = require('jquery');
 
+const agregarProducto = async(productos) => {
+    // console.log($('#Cantidad-${productos}').val());
+    console.log('holaquetal');
+}
+
 document.addEventListener('click', e => {
     if (e.target.dataset.short) {
         const url = `http://localhost:5000/${e.target.dataset.short}`
@@ -15,6 +20,15 @@ document.addEventListener('click', e => {
         })
     }
 })
+
+$("#modalBtn").click(function (e) {
+    let verduras = JSON.parse(localStorage.getItem("verduras"));
+    let htmlBody = "";
+    verduras.productos.forEach(element => {
+      htmlBody += `<img src="/assets/img/${element}.png" class="card-img-top" alt="...">`
+    });
+    $("#modalBody").html(htmlBody);
+  });
 
 $(document).ready(function () {
 
@@ -43,3 +57,4 @@ $(document).ready(function () {
     
     $('[data-toggle="tooltip"]').tooltip();
     $('[data-toggle="popover"]').popover();
+

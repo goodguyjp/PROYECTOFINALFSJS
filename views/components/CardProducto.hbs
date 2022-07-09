@@ -3,6 +3,10 @@
   <div class="card-body">
     <h5 class="card-title">{{productos.nombre}}</h5>
     <p class="card-text">Precio: {{productos.precio}}</p>
-    <a href="#" class="btn btn-primary">APRIETA ME</a> 
+    
+    <div class="row">
+      <button onclick="agregarProducto({{productos.nombre}})">Agregar</button>
+    <input placeholder="Enter a number" required type="number" value="" min="0" max="100" id="Cantidad-{{productos.nombre}}" class="col-6"/>    
+    </div>    
   </div>
 </div>

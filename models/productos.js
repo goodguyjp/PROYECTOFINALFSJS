@@ -17,7 +17,7 @@ const productoSchema = new Schema({
     precio: {
         type: Number,
 
-    }
+    },
 });
 
 module.exports = mongoose.model('productos', productoSchema)

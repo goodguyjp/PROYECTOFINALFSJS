@@ -1,13 +1,14 @@
 const Url = require('../models/Url')
+const { v4: uuidv4 } = require("uuid");
 const productos = require('../models/productos')
 
 const leerUrls = async (req, res) => {
-    console.log(req.user);
+    // console.log(req.user);
     try {
 
         const producto = await productos.find({user: req.user.id}).lean()
         const urls = await Url.find().lean()
-        res.render('home', { urls: urls, productos: producto })
+        res.render('home', { urls: urls, productos: producto,  user: req.user.id})
 
     } catch (error) {
         // console.log(error);
@@ -21,8 +22,11 @@ const agregarUrl = async (req, res) => {
     const { origin } = req.body
 
     try {
-        const url = new Url({origin: origin})
+        const url = new Url({ origin: origin, shortURL: uuidv4().slice(0,8), user: req.user.id, productos: producto })
+        // const producto = await productos.find({user: req.user.id}).lean()
+        // res.render('home', { urls: urls, productos: producto })
         await url.save()
+        req.flash('mensajes', [{ msg: "Url agregada" }])
         res.redirect('/')
     } catch (error) {
         req.flash('mensajes', [{ msg: error.message }])
