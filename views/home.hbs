@@ -1,20 +1,15 @@
 <h1 align="center">Haz tu Pedido aqui !</h1>
-<input type="hidden" value="{{user}}">
 
 {{> Form}}
 
 {{#each urls }}
 
-   {{> Card item=this}}
+{{> Card item=this}}
 
 {{/each}}
 
 {{#each productos }}
 
-   {{> CardProducto productos=this}}
+{{> CardProducto productos=this}}
 
 {{/each}}
-
-
-
-

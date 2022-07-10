@@ -8,7 +8,7 @@ const leerUrls = async (req, res) => {
 
         const producto = await productos.find({user: req.user.id}).lean()
         const urls = await Url.find().lean()
-        res.render('home', { urls: urls, productos: producto,  user: req.user.id})
+        res.render('home', { urls: urls, productos: producto})
 
     } catch (error) {
         // console.log(error);
@@ -31,6 +31,13 @@ const agregarUrl = async (req, res) => {
     } catch (error) {
         req.flash('mensajes', [{ msg: error.message }])
         return res.redirect('/')
+    }
+}
+
+const agregarProd = async (req, res) => {
+    try {
+        console.log("asdf", req.body);
+    } catch (error) {
     }
 }
 
@@ -87,5 +94,6 @@ module.exports = {
     eliminarUrl,
     editarUrlForm,
     editarUrl,
-    redireccionamiento,   
+    redireccionamiento,
+    agregarProd
 }

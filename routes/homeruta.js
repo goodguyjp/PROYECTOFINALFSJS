@@ -5,6 +5,7 @@ const {
     eliminarUrl, 
     editarUrlForm,
     editarUrl,
+    agregarProd,
     redireccionamiento
 } = require('../controllers/homeController');
 const urlValidar = require('../middlewares/urlValida');
@@ -12,7 +13,7 @@ const verificarUser = require('../middlewares/verificarUser');
 
 const router = express.Router();
 
-
+router.post('/addCoti', agregarProd);    
 router.get('/', verificarUser, leerUrls); 
 router.post('/', verificarUser, urlValidar, agregarUrl) 
 router.get('/eliminar/:id', verificarUser, eliminarUrl)
