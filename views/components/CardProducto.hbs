@@ -1,12 +1,15 @@
 <div class="card mt-3 container" style="width: 15rem;">
-  <img src="{{productos.Foto}}" class="card-img-top" alt="">
+  <img src="{{productos.Foto}}" class="card-img-top mt-2" alt="">
   <div class="card-body">
     <h5 class="card-title">{{productos.nombre}}</h5>
     <p class="card-text">Precio: {{productos.precio}}</p>
     
     <div class="row">
-      <button class="btnCoti" value="{{productos.nombre}}">Agregar</button>
-    <input placeholder="Enter a number" required type="number" value="" min="0" max="100" id="Cantidad-{{productos.nombre}}" class="col-6"/>    
+      <form action="/" method="post">
+        <button class="btnCoti" value="{{productos.nombre}}" name="origin">Agregar</button>
+        <input placeholder="Enter a number" required type="number" value="" min="0" max="100" id="Cantidad-{{productos.nombre}}" class="col-6"/>  
+      </form>
+        
     </div>    
   </div>
 </div>

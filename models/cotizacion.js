@@ -11,8 +11,6 @@ const cotiScheme = new Schema({
         type: String,
         lowercase: true,
         required: true,
-        unique: true,
-        index: { unique: true }
     },
     cantidadProd: {
         type: Number,
@@ -21,4 +19,4 @@ const cotiScheme = new Schema({
 });
 
 
-module.exports = mongoose.model('User', cotizacionSchema)
+module.exports = mongoose.model('Cotizacion', cotiScheme)
