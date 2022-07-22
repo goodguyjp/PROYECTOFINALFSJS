@@ -88,6 +88,7 @@ const eliminarProd = async (req, res) => {
   } 
 };
 
+//HU - 9 Yo como usuario registrado, quiero finalizar el pedido/compra.
 const finalizaCompra = async (req, res) => {
       const idUsuario = req.user.id.toHexString();
       await cotizacion.deleteMany({iduser: idUsuario});
