@@ -1,49 +1,26 @@
 const express = require("express");
 const session = require("express-session");
-const MongoStore = require('connect-mongo')
 const flash = require('connect-flash')
 const passport = require('passport')
+const MongoStore = require('connect-mongo')
 const cors = require('cors')
 const { create } = require('express-handlebars')
 const User = require("./models/User");
 require("dotenv").config();
-const clientDB = require('./database/db')
-// require('./database/db')
+require('./database/db')
 
 const app = express();
 
-
-const corsOptions = {
-  credentials: true,
-  origin: process.env.PATHHEROKU || "*",
-  methods: ['GET', 'POST']
-};
-
-app.use(cors(corsOptions)) 
-
+//middleware express-session
 app.use(
   session({
     secret: process.env.SECRETSESSION,
     resave: false,
     saveUninitialized: false,
-    name: "session-user",
-    store: MongoStore.create({
-        clientPromise: clientDB,
-        dbName: process.env.DBNAME,
-    }), 
-    cookie: { secure: process.env.MODO === 'production', maxAge: 30 * 24 * 60 * 60 * 1000 },
+    name: "session-user", 
+   
   })
 );
-
-// app.use(
-//   session({
-//     secret: process.env.SECRETSESSION,
-//     resave: false,
-//     saveUninitialized: false,
-//     name: "session-user", 
-   
-//   })
-// );
 
 app.use(flash())
 app.use(require("body-parser").json())
@@ -74,15 +51,16 @@ app.engine(".hbs", hbs.engine);
 app.set("view engine", ".hbs");
 app.set("views", "./views");
 
+//middlewares directorios locales
 app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist'))
 app.use(express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: true }));
 
+//middleware para Router
 app.use("/", require("./routes/homerouter"));
 app.use("/auth", require("./routes/auth"));
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log("Servidor en puerto: " + PORT);
+app.listen(5000, () => {
+  console.log("Servidor en puerto 5000");
 });

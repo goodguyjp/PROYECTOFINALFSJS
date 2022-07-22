@@ -27,17 +27,11 @@ $(".btnCoti").click(function () {
 });
 
 $(document).ready(function () {
-  $("#facebook").click(function () {
-    openInNewTab("http://www.facebook.com");
+  $("#instagram").click(function () {
+    openInNewTab("http://www.instagram.com");
   });
-  $("#github").click(function () {
-    openInNewTab("http://www.github.com");
-  });
-  $("#twitter").click(function () {
-    openInNewTab("http://www.twitter.com");
-  });
-  $("#linkedin").click(function () {
-    openInNewTab("http://www.linkedin.com");
+  $("#whatsapp").click(function () {
+    openInNewTab("https://web.whatsapp.com/");
   });
 });
 
@@ -47,6 +41,9 @@ function openInNewTab(href) {
     href: href,
   }).click();
 }
+// Funcionalidad para tooltip y popover
+$('[data-toggle="tooltip"]').tooltip();
+$('[data-toggle="popover"]').popover();
 
 // Example POST method implementation:
 async function postData(url = '', data = {}) {

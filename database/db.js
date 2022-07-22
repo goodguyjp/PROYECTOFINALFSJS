@@ -7,5 +7,5 @@ const clientDB = mongoose.connect(process.env.URI)
         return m.connection.getClient()
     } )
     .catch((e) => console.log('Fallo en la conexion ' + e))
-
+ 
 module.exports = clientDB
