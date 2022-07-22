@@ -74,6 +74,7 @@ const agregarProd = async (req, res) => {
   }
 };
 
+//HU - 5 Yo como usuario registrado pueda modificar mis datos del pedido.
 const eliminarProd = async (req, res) => {
   try {
     const idUsuario = req.user.id.toHexString();
