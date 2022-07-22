@@ -7,7 +7,7 @@ const agregarItem = async (req, res) => {
 };
 
 //HU - 2 Yo como usuario, quiero ver los productos de la pagina con mi cuenta registrada.
-
+// HU - 7 Yo como usuario registrado quiero ver la información del producto, precio y descripción.
 const leerProductos = async (req, res) => {
   // console.log(req.user.id);
   try {
