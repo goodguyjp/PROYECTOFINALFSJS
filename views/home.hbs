@@ -1,15 +1,27 @@
+<section id="buddy" class="d-none d-sm-block bgBlack">
 <h1 align="center">Haz tu Pedido aqui !</h1>
 
-{{> Form}}
+<div class="row">
+    <div class="col-sm-6">
+    {{#each productos }}
 
-{{#each urls }}
+        {{> CardProducto productos=this}}
 
-{{> Card productos=this}}
+    {{/each}}
+</div>
 
-{{/each}}
+<div class="col-sm-6">
+    <h3>Detalle Pedido</h3>
+    {{#each cotizacion }}
+        {{> Card cotizacion=this}}
+    {{/each}}
 
-{{#each productos }}
+<hr class="bgColorCe"/>
+<p style="color: #ffffffff"><b>Total pedido:</b> {{total}}</p>
+<a href="/compra"><button type="submit" class="btn btn-danger mb-2">Confirmar compra</button></a>
 
-{{> CardProducto productos=this}}
+</div>
 
-{{/each}}
+</div>
+
+</section>

@@ -1,0 +1,16 @@
+<h1 class="text-center">{{user.userName}}</h1>
+<h4 class="text-center">Email: {{email}}</h4>
+<p class="text-center"><b>aqui tu perfil</b></p>
+
+<div class="my-4 text-center">
+    {{#if imagen}}
+        <img src="/img/perfiles/{{imagen}}" alt="" class="rounded-circle">
+        {{else}} 
+        <img src="/img/perfiles/perfil.jpg" alt="" class="rounded-circle">    
+    {{/if}}
+</div>
+
+<form action="/perfil?" method="post" enctype="multipart/form-data" style="width: 50%;">
+    <input class="form-control form-control-sm" id="formFileSm" type="file" name="myFile">
+    <button class="btn btn-dark my-3">Cambiar imagen de perfil</button>
+</form>

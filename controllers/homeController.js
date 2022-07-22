@@ -1,135 +1,96 @@
-const { v4: uuidv4 } = require("uuid");
 const productos = require("../models/productos");
 const cotizacion = require("../models/cotizacion");
 
-const leerUrls = async (req, res) => {
-  // console.log(req.user);
-  try {
-    // const producto = await productos.find({ user: req.user.id }).lean();
-    // const urls = await Url.find().lean();
-    // res.render("home", { urls: urls, productos: producto });
-  } catch (error) {
-    // console.log(error);
-    // res.send('fallo algo...')
-    req.flash("mensajes", [{ msg: error.message }]);
-    return res.redirect("/");
-  }
-};
-
-const agregarUrl = async (req, res) => {
-  const { origin } = req.body;
-
-  try {
-    const url = new Url({
-      origin: origin,
-      shortURL: uuidv4().slice(0, 8),
-      user: req.user.id,
-      productos: producto,
-    });
-    // const producto = await productos.find({user: req.user.id}).lean()
-    // res.render('home', { urls: urls, productos: producto })
-    await url.save();
-    req.flash("mensajes", [{ msg: "Url agregada" }]);
-    res.redirect("/");
-  } catch (error) {
-    req.flash("mensajes", [{ msg: error.message }]);
-    return res.redirect("/");
-  }
+const agregarItem = async (req, res) => {
+  // req.flash("mensajes", [{ msg: error.message }]);
+  return res.redirect("/");
 };
 
 const leerProductos = async (req, res) => {
-  console.log(req.user);
+  // console.log(req.user.id);
   try {
-      const productosBD = await productos.find().lean()
-      const cotiDB = await cotizacion.find().lean()
-      const filtroCoti = filtroUser(req.user.id.toHexString(), cotiDB)
-      console.log(filtroCoti);
-      return res.render('home', {productos:productosBD})
+    const productosBD = await productos.find().lean();
+    const cotiDB = await cotizacion.find().lean();
+    const filtroCoti = filtroUser(req.user.id.toHexString(), cotiDB);
+    const arrayNomProd = [
+      ...new Set(filtroCoti.map((item) => item.nombreProd)),
+    ];
+    let prodSum = [];
+    arrayNomProd.forEach((nombre) => {
+      arrayPorNombre = filtroCoti.filter((e) => e.nombreProd == nombre);
+      precio = productosBD.filter(
+        (e) => e.nombre.toLowerCase() == nombre.toLowerCase()
+      )[0].precio;
+      suma = 0;
+      arrayPorNombre.forEach((e) => (suma += e.cantidadProd));
+      prodSum.push({ name: nombre, cantidad: suma, total: suma * precio });
+    });
+    let totalFinal = 0;
+    prodSum.forEach((e) => (totalFinal += e.total));
+    // console.log(prodSum, totalFinal);
+
+    return res.render("home", {
+      productos: productosBD,
+      cotizacion: prodSum,
+      total: totalFinal,
+    });
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 const filtroUser = (userId, cotizaciones) => {
-  return cotizaciones.filter(e => e.userId == userId)
-}
+  return cotizaciones.filter((e) => e.userId == userId);
+};
 
 const leerCoti = async (req, res) => {
-   try {
-      const cotiDB = await cotizacion.find().lean()
-      console.log(cotiDB);
-      return cotiDB
+  try {
+    const cotiDB = await cotizacion.find().lean();
+    // console.log(cotiDB);
+    return cotiDB;
   } catch (error) {
     console.log(error);
   }
-}
+};
 const agregarProd = async (req, res) => {
-    console.log(req.user.id);
-    try {
-        const coti = new cotizacion({ userId: req.user.id, nombreProd: req.body.name , cantidadProd: req.body.quantity })
-        await coti.save()
-        res.redirect('/')
-       
-    } catch (error) { 
-      console.log(error);
-      res.send('error algo fallo')
-    }
-};
-
-const eliminarUrl = async (req, res) => {
-  const { id } = req.params;
+  console.log(req.user.id);
   try {
-    await Url.findByIdAndDelete(id);
+    const coti = new cotizacion({
+      userId: req.user.id,
+      nombreProd: req.body.name,
+      cantidadProd: req.body.quantity,
+    });
+    await coti.save();
     res.redirect("/");
   } catch (error) {
-    req.flash("mensajes", [{ msg: error.message }]);
-    return res.redirect("/");
+    console.log(error);
+    res.send("error algo fallo");
   }
 };
 
-const editarUrlForm = async (req, res) => {
-  const { id } = req.params;
+const eliminarProd = async (req, res) => {
   try {
-    const url = await Url.findById(id).lean();
-    res.render("home", { url });
+    const idUsuario = req.user.id.toHexString();
+    const nombreK = req.body.name
+    await cotizacion.deleteMany({ iduser: idUsuario, nombreProd: nombreK})    
+    return res.redirect("/");
   } catch (error) {
     req.flash("mensajes", [{ msg: error.message }]);
-    return res.redirect("/");
-  }
+    
+  } 
 };
 
-const editarUrl = async (req, res) => {
-  const { id } = req.params;
-  const { origin } = req.body;
-  try {
-    await Url.findByIdAndUpdate(id, { origin: origin });
-    res.redirect("/");
-  } catch (error) {
-    req.flash("mensajes", [{ msg: error.message }]);
-    return res.redirect("/");
-  }
-};
-
-const redireccionamiento = async (req, res) => {
-  const { shortURL } = req.params;
-  console.log(shortURL);
-  try {
-    const urlDB = await Url.findOne({ shortURL: shortURL });
-    res.redirect(urlDB.origin);
-  } catch (error) {
-    req.flash("mensajes", [{ msg: error.message }]);
-    return res.redirect("/");
-  }
+const finalizaCompra = async (req, res) => {
+      const idUsuario = req.user.id.toHexString();
+      await cotizacion.deleteMany({iduser: idUsuario});
+      res.render("compra");
 };
 
 module.exports = {
-  leerUrls,
-  agregarUrl,
-  eliminarUrl,
-  editarUrlForm,
-  editarUrl,
-  redireccionamiento,
+  agregarItem,
+  eliminarProd,
   agregarProd,
   leerProductos,
   leerCoti,
+  finalizaCompra,
 };

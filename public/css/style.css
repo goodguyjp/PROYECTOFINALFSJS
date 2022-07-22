@@ -3,12 +3,35 @@ html {
 }
 
 body {
+    background-image: url(/img/IMG_5455.jpg);
+    background-size: cover;
     display: flex;
     flex-direction: column;
-    background-color: white;
     min-height: 100%;
+    width: 100%;
+    
 }
 
 footer {
     margin-top: auto;
+    padding: 0;
+}
+
+.brand img{
+    width: 40px;
+    height: 40px;
+}
+
+hr { 
+    display: block; height: 1px;
+    border: 0; border-top: 1px solid #000000;
+    margin: 1em 0; padding: 0; 
+}
+
+.card {
+    background-color: rgba(226, 231, 226, 0.5);
+}
+
+h1, h3, h4, p {
+    color: #ffffff;
 }

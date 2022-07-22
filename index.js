@@ -1,37 +1,53 @@
 const express = require("express");
 const session = require("express-session");
+const MongoStore = require('connect-mongo')
 const flash = require('connect-flash')
 const passport = require('passport')
-const { create } = require("express-handlebars");
-// const csrf = require('csurf')
+const cors = require('cors')
+const { create } = require('express-handlebars')
 const User = require("./models/User");
-const jquery = require('jquery');
 require("dotenv").config();
-require("./database/db");
+const clientDB = require('./database/db')
 
 const app = express();
 
+const corsOptions = {
+  credentials: true,
+  origin: process.env.PATHHEROKU || "*",
+  methods: ['GET', 'POST']
+};
+
+app.use(cors(corsOptions)) 
+
 app.use(
   session({
-    secret: "palabra secreta",
+    secret: process.env.SECRETSESSION,
     resave: false,
     saveUninitialized: false,
-    name: "secret-name-hola",
+    name: "session-user",
+    store: MongoStore.create({
+        clientPromise: clientDB,
+        dbName: process.env.DBNAME,
+    }), 
+    cookie: { secure: process.env.MODO === 'production', maxAge: 30 * 24 * 60 * 60 * 1000 },
   })
 );
 app.use(flash())
 app.use(require("body-parser").json())
-app.use(passport.initialize())
+app.use(passport.initialize()) //
 app.use(passport.session())
 
+// Cuando se establece una sesión de inicio de sesión, la información sobre el usuario será
+// almacenado en la sesión. Esta información es proporcionada por `serializeUser`
+// función, que genera el ID de usuario y el nombre de usuario.
 passport.serializeUser((user, done) => 
 
 done(null, {id: user._id, userName: user.userName})
-) //req.user
+) //se va al req.user
 
 passport.deserializeUser( async(user, done) => {
 
-  const userDB = await User.findById(user.id)  
+  const userDB = await User.findById(user.id)  //Llama al modelo del Usuario
   return done(null, {id: userDB._id, userName: userDB.userName})
 })
 
@@ -47,14 +63,6 @@ app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist/c
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist'))
 app.use(express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: true }));
-
-// app.use(csrf())
-
-// app.use((req, res, next) => {
-//     res.locals.csrfToken = req.csrfToken()
-//     res.locals.mensajes = req.flash('mensajes')
-//     next()
-// })
 
 app.use("/", require("./routes/homeruta"));
 app.use("/auth", require("./routes/auth"));

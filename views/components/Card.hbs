@@ -1,10 +1,10 @@
-  <article class="card mb-2">
-    <div class="card-boddy">
-        <p>{{productos.nombre}}</p>
-        <p>{{productos.precio}}</p>
-        <a href="/eliminar/{{item._id}}" class="btn btn-danger">Eliminar</a>
-        <a href="/editar/{{item._id}}" class="btn btn-warning">Editar</a>
-        <button data-short="{{item.shortURL}}" href="#" class="btn btn-info">Copiar</button>        
-    </div>
+  <article class="card mb-2 mt-2">
+    <div class="card-boddy container">
+        <p><b>Producto:</b> {{cotizacion.name}}</p>
+        <p><b>Cantidad:</b> {{cotizacion.cantidad}}</p>
+        <p><b>total:</b> {{cotizacion.total}}</p>
+        <button class="delete" id="{{cotizacion.name}}">Eliminar</button>      
+    </div> 
 </article>
 
+{{!-- (Para las fotos, pero es opcional y solo pa que se vea mas bonito) Hacer un forish a producto, dentro del forish preguntar si nombre == cotizacion.name, agregar un pe con la foto si es que es igual --}}

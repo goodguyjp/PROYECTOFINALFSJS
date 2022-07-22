@@ -1,6 +1,6 @@
 document.addEventListener("click", (e) => {
   if (e.target.dataset.short) {
-    const url = `http://localhost:5000/${e.target.dataset.short}`;
+    const url = `${windows.location.origin}/${e.target.dataset.short}`;
 
     navigator.clipboard
       .writeText(url)
@@ -24,15 +24,6 @@ $(".btnCoti").click(function () {
   .then(data => {
     console.log(data); // JSON data parsed by `data.json()` call
   });
-});
-
-$("#modalBtn").click(function (e) {
-  let verduras = JSON.parse(localStorage.getItem("verduras"));
-  let htmlBody = "";
-  verduras.productos.forEach((element) => {
-    htmlBody += `<img src="/assets/img/${element}.png" class="card-img-top" alt="...">`;
-  });
-  $("#modalBody").html(htmlBody);
 });
 
 $(document).ready(function () {
@@ -73,3 +64,14 @@ async function postData(url = '', data = {}) {
   });
   return response.json(); // parses JSON response into native JavaScript objects
 }
+
+$('.delete').click(function (e) { 
+  let nombreProducto = this.id
+  let data = { name: nombreProducto };
+
+  postData('http://localhost:5000/eliminar', data)
+  .then(data => {
+    console.log(data); // JSON data parsed by `data.json()` call
+  });
+  
+});

@@ -12,19 +12,20 @@ const {
 
 const router = express.Router();
 
+//Se captura el body y se mandan los metodos de Express-Validator
 router.get("/register", registerForm);
 router.post(
   "/register",
   [
-    body("userName", "Ingrese un nombre")
+    body("userName", "Ingrese un nombre válido")
             .trim()
-            .notEmpty()
+            .notEmpty() 
             .escape(),
         body("email", "Ingrese un email válido")
             .trim()
             .isEmail()
             .normalizeEmail(),
-        body("password", "Contraseña con 6 o más carácteres")
+        body("password", "Contraseña mínimo 6 carácteres")
             .trim()
             .isLength({ min: 6 })
             .escape()
@@ -40,12 +41,13 @@ router.post(
 );
 router.get("/confirmar/:token", confirmarCuenta);
 router.get("/login", loginForm);
-router.post("/login", [
-  body("email", "Ingrese un email válido")
+router.post(
+  "/login", [
+      body("email", "Ingrese un email válido")
             .trim()
             .isEmail()
             .normalizeEmail(),
-  body("password", "Contraseña con 6 o más carácteres")
+  body("password", "Contraseña minimo 6 carácteres")
             .trim()
             .isLength({ min: 6 })
             .escape()          

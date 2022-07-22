@@ -1,28 +1,25 @@
 const express = require('express');
 const { 
-    leerUrls,
-    agregarUrl, 
-    eliminarUrl, 
-    editarUrlForm,
-    editarUrl,
+    agregarItem, 
+    eliminarProd,
     agregarProd,
     leerProductos,
-    redireccionamiento,
-    leerCoti
+    leerCoti,
+    finalizaCompra
 } = require('../controllers/homeController');
-const urlValidar = require('../middlewares/urlValida');
+const { formPerfil, editarFotoPerfil } = require('../controllers/perfilController');
 const verificarUser = require('../middlewares/verificarUser');
 
 const router = express.Router();
 
 router.get('/leerCoti', leerCoti)
 router.get('/', verificarUser, leerProductos)
-router.post('/addCoti', verificarUser, agregarProd);    
-router.get('/', verificarUser, leerUrls); 
-router.post('/', verificarUser, urlValidar, agregarUrl) 
-router.get('/eliminar/:id', verificarUser, eliminarUrl)
-router.get('/editar/:id', verificarUser, editarUrlForm)
-router.post('/editar/:id', verificarUser, urlValidar, editarUrl)
-router.get('/:shortURL', redireccionamiento)
+router.post('/addCoti', verificarUser, agregarProd); 
+router.post('/', verificarUser, agregarItem) 
+router.post('/eliminar', verificarUser, eliminarProd)
+router.get('/compra',verificarUser, finalizaCompra)
+
+router.get('/perfil', verificarUser, formPerfil)
+router.post('/perfil', verificarUser, editarFotoPerfil)
 
 module.exports = router
