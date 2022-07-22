@@ -66,6 +66,7 @@ const agregarProd = async (req, res) => {
       nombreProd: req.body.name,
       cantidadProd: req.body.quantity,
     });
+    // HU - 8 Yo como usuario registrado, quiero ir agregando estos productos a un PEDIDO.
     await coti.save();
     res.redirect("/");
   } catch (error) {
