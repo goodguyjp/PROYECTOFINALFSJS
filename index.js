@@ -8,8 +8,10 @@ const { create } = require('express-handlebars')
 const User = require("./models/User");
 require("dotenv").config();
 const clientDB = require('./database/db')
+// require('./database/db')
 
 const app = express();
+
 
 const corsOptions = {
   credentials: true,
@@ -32,6 +34,17 @@ app.use(
     cookie: { secure: process.env.MODO === 'production', maxAge: 30 * 24 * 60 * 60 * 1000 },
   })
 );
+
+// app.use(
+//   session({
+//     secret: process.env.SECRETSESSION,
+//     resave: false,
+//     saveUninitialized: false,
+//     name: "session-user", 
+   
+//   })
+// );
+
 app.use(flash())
 app.use(require("body-parser").json())
 app.use(passport.initialize()) //
@@ -51,6 +64,7 @@ passport.deserializeUser( async(user, done) => {
   return done(null, {id: userDB._id, userName: userDB.userName})
 })
 
+// recibe las configuraciones de express-handlebars con extension .hbs
 const hbs = create({
   extname: ".hbs",
   partialsDir: ["views/components"],
@@ -59,14 +73,16 @@ const hbs = create({
 app.engine(".hbs", hbs.engine);
 app.set("view engine", ".hbs");
 app.set("views", "./views");
+
 app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist'))
 app.use(express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/", require("./routes/homeruta"));
+app.use("/", require("./routes/homerouter"));
 app.use("/auth", require("./routes/auth"));
 
-app.listen(5000, () => {
-  console.log("Servidor en puerto 5000");
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log("Servidor en puerto: " + PORT);
 });

@@ -5,9 +5,9 @@ const {
   loginForm,
   registerForm,
   registerUser,
-  confirmarCuenta,
+  confirmAccount,
   loginUser,
-  cerrarSesion,
+  logoutSession,
 } = require("../controllers/authController");
 
 const router = express.Router();
@@ -39,7 +39,7 @@ router.post(
   ],
   registerUser
 );
-router.get("/confirmar/:token", confirmarCuenta);
+router.get("/confirmar/:token", confirmAccount);
 router.get("/login", loginForm);
 router.post(
   "/login", [
@@ -53,6 +53,6 @@ router.post(
             .escape()          
 ] , loginUser);
 
-router.get('/logout', cerrarSesion)
+router.get('/logout', logoutSession)
 
 module.exports = router;

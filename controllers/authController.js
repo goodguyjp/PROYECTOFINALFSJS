@@ -13,22 +13,24 @@ const registerForm = (req, res) => {
 const loginForm = (req, res) => {
   res.render("login", { mensajes: req.flash("mensajes") });
 };
+
 // HU 1, Yo como visitante quiero registrarme en el sitio y ser un usuario registrado
+
 const registerUser = async (req, res) => {
   const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    req.flash("mensajes", errors.array());
-    return res.redirect("/auth/register");
-    // return res.json(errors)
+    if (!errors.isEmpty()) {
+      req.flash("mensajes", errors.array());
+      return res.redirect("/auth/register");
+      // return res.json(errors)
   }
 
   const { userName, email, password } = req.body;
-  try {
-    let user = await User.findOne({ email: email });
-    if (user) throw new Error("ya existe el usuario");
+    try {
+      let user = await User.findOne({ email: email });
+      if (user) throw new Error("ya existe el usuario");
 
-    user = new User({ userName, email, password, tokenConfirm: uuidv4() });
-    await user.save();
+      user = new User({ userName, email, password, tokenConfirm: uuidv4() });
+      await user.save();
 
     // enviar correo electronico con la confirmacion de la cuenta (como no tengo un hosting contratado, ocupare mailtrap)
     const transport = nodemailer.createTransport({
@@ -44,9 +46,7 @@ const registerUser = async (req, res) => {
       from: '"Fred Foo" <foo@example.com>',
       to: user.email,
       subject: "Verifica tu cuenta de correo",
-      html: `<a href="${
-        process.env.PATHHEROKU || "http://localhost:5000"
-      }/auth/confirmar/${user.tokenConfirm}">Verifica tu cuenta aqui</a>`,
+      html: `<a href="${process.env.PATHHEROKU || "http://localhost:5000"}/auth/confirmar/${user.tokenConfirm}">Verifica tu cuenta aqui</a>`,
     });
 
     req.flash("mensajes", [
@@ -60,7 +60,7 @@ const registerUser = async (req, res) => {
   }
 };
 
-const confirmarCuenta = async (req, res) => {
+const confirmAccount = async (req, res) => {
   const { token } = req.params;
 
   try {
@@ -116,7 +116,7 @@ const loginUser = async (req, res) => {
   }
 };
 
-const cerrarSesion = (req, res) => {
+const logoutSession = (req, res) => {
   req.logout(() => {
     return res.redirect("/auth/login");
   });
@@ -126,7 +126,7 @@ module.exports = {
   loginForm,
   registerForm,
   registerUser,
-  confirmarCuenta,
+  confirmAccount,
   loginUser,
-  cerrarSesion,
+  logoutSession,
 };
