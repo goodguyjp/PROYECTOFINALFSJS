@@ -15,6 +15,7 @@ module.exports.formPerfil = async(req, res) => {
     }     
 } 
 
+// HU - 10 Yo como usuario registrado, poder cambiar mi foto de perfil.
 module.exports.editarFotoPerfil = async(req, res) => {
     const form = new formidable.IncomingForm()
     form.maxFileSize = 50 * 1024 * 1024 // 5 MB
