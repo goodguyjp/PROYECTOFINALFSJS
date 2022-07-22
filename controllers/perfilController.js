@@ -4,6 +4,7 @@ const User = require("../models/User");
 const fs = require('fs')
 const path = require('path')
 
+// HU - 6 Yo como usuario registrado puedo acceder a mi información personal almacenada en la DB.
 module.exports.formPerfil = async(req, res) => {
     try {
         const user = await User.findById(req.user.id)
