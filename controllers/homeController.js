@@ -54,6 +54,9 @@ const leerCoti = async (req, res) => {
     console.log(error);
   }
 };
+
+//HU - 3 Yo como usuario ya registrado puede crear nuevo pedido / solicitud de compra.
+
 const agregarProd = async (req, res) => {
   console.log(req.user.id);
   try {
