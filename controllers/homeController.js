@@ -6,6 +6,8 @@ const agregarItem = async (req, res) => {
   return res.redirect("/");
 };
 
+//HU - 2 Yo como usuario, quiero ver los productos de la pagina con mi cuenta registrada.
+
 const leerProductos = async (req, res) => {
   // console.log(req.user.id);
   try {
