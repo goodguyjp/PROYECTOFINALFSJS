@@ -14,7 +14,6 @@ const loginForm = (req, res) => {
   res.render("login", { mensajes: req.flash("mensajes") });
 };
 
-
 // HU 1, Yo como visitante quiero registrarme en el sitio y ser un usuario registrado
 const registerUser = async (req, res) => {
   const errors = validationResult(req);

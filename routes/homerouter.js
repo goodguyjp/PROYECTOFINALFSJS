@@ -12,7 +12,7 @@ const verificarUser = require('../middlewares/verificarUser');
 
 const router = express.Router();
 
-//Routes del HomeController
+//Routes con verificacion de usuario
 router.get('/leerCoti', leerCoti)
 router.get('/', verificarUser, leerProductos)
 router.post('/addCoti', verificarUser, agregarProd); 
